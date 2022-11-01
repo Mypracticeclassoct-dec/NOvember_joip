@@ -1,0 +1,5 @@
+region="us-south-1"
+cidr="192.168.0.0/16"
+subnet_az = "us-south-1a"
+sub_cidr="192.168.0.0/24"
+machine_type="t2.micro"
