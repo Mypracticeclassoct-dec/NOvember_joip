@@ -97,6 +97,7 @@ resource "aws_instance" "s3instance" {
   availability_zone      = var.subnet_az[0]
   instance_type          = var.machine_type
   key_name               = var.key_pair
+  associate_public_ip_address = true
   //vpc_security_group_ids = [aws_security_group.s3secgp.id]
   //subnet_id = aws_subnet.s3subnets[0].id
   root_block_device {
