@@ -2,10 +2,10 @@
 
 terraform {
   backend "s3" {
-    bucket = "mys3bucketbackend"
-    key = "<your key>"
+    bucket = "backendtfbuckets3"
+    key = "pckey"
     region = "ap-south-1"
-    dynamodb_table = "terraforms3table"
+    dynamodb_table = "terraformbackendtbs3"
 
   }
 }
