@@ -2,7 +2,7 @@
 
 terraform {
   backend "s3" {
-    bucket = "backendtfbuckets3"
+    bucket = "terraformbuckets301"
     key = "pckey"
     region = "ap-south-1"
     dynamodb_table = "terraformbackendtbs3"

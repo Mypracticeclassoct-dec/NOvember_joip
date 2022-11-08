@@ -84,16 +84,18 @@ resource "aws_security_group" "s3secgp" {
   }
 }
 // To create a ec2  instance first create a network interface 
-resource "aws_network_interface" "s3netinf" {
+/*resource "aws_network_interface" "s3netinf" {
   subnet_id = aws_subnet.s3subnets[0].id
+  
   tags = {
     "Name" = "network_interface"
   }
 
-}
+}*/
 // creating the EC2 instance 
 resource "aws_instance" "s3instance" {
   ami                 = "ami-062df10d14676e201" // EC2 ubuntu machine in mumbai region
+  subnet_id = aws_subnet.s3subnets[0].id
   availability_zone      = var.subnet_az[0]
   instance_type          = var.machine_type
   key_name               = var.key_pair
@@ -103,8 +105,11 @@ resource "aws_instance" "s3instance" {
   root_block_device {
     volume_size = 8
   }
-  network_interface {
+ /* network_interface {
     network_interface_id = aws_network_interface.s3netinf.id
     device_index         = 0
+  }*/
+  tags = {
+    "Name" = "s3ec2test"
   }
 }
