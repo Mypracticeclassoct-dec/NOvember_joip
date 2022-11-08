@@ -29,7 +29,7 @@ resource "aws_internet_gateway" "s3intgt" {
 // creating route-table
 resource "aws_route_table" "s3routetb" {
   vpc_id = aws_vpc.s3vpc.id
-  route  {
+  route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.s3intgt.id
   }
@@ -94,18 +94,18 @@ resource "aws_security_group" "s3secgp" {
 }*/
 // creating the EC2 instance 
 resource "aws_instance" "s3instance" {
-  ami                 = "ami-062df10d14676e201" // EC2 ubuntu machine in mumbai region
-  subnet_id = aws_subnet.s3subnets[0].id
-  availability_zone      = var.subnet_az[0]
-  instance_type          = var.machine_type
-  key_name               = var.key_pair
+  ami                         = "ami-062df10d14676e201" // EC2 ubuntu machine in mumbai region
+  subnet_id                   = aws_subnet.s3subnets[0].id
+  availability_zone           = var.subnet_az[0]
+  instance_type               = var.machine_type
+  key_name                    = var.key_pair
   associate_public_ip_address = true
-  //vpc_security_group_ids = [aws_security_group.s3secgp.id]
+  vpc_security_group_ids      = [aws_security_group.s3secgp.id]
   //subnet_id = aws_subnet.s3subnets[0].id
   root_block_device {
     volume_size = 8
   }
- /* network_interface {
+  /* network_interface {
     network_interface_id = aws_network_interface.s3netinf.id
     device_index         = 0
   }*/
