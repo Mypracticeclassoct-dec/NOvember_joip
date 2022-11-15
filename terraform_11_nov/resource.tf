@@ -9,7 +9,8 @@ resource "aws_vpc" "appvpc" {
 resource "aws_subnet" "appsub" {
   vpc_id     = aws_vpc.appvpc.id
   count      = length(var.subnet_az)
-  cidr_block = cidrsubnet("var.cidr", 8, [count.index]) // This is the subnet function used to define the subnet cidr using the vpc cidr
+  cidr_block = cidrsubnet(var.cidr, 8, count.index) // This is the subnet function used to define the subnet cidr using the vpc cidr
+  availability_zone = var.subnet_az[count.index]
   tags = {
     "Name" = var.subnet_name[count.index]
   }
@@ -20,16 +21,16 @@ resource "aws_subnet" "appsub" {
 // creating the internet gateway
 resource "aws_internet_gateway" "appint" {
   vpc_id = aws_vpc.appvpc.id
-  type = {
+  tags = {
     "Name" = "app_intgw"
   }
 }
 // Attaching internet gateway to the vpc
-resource "aws_internet_gateway_attachment" "attint" {
+/*resource "aws_internet_gateway_attachment" "attint" {
   internet_gateway_id = aws_internet_gateway.appint.id
   vpc_id              = aws_vpc.appvpc.id
 
-}
+}*/
 // creating  public route tables 
 resource "aws_route_table" "pubrt" {
   vpc_id = aws_vpc.appvpc.id
@@ -111,6 +112,21 @@ resource "aws_instance" "dev" {
   tags = {
     "Name" = "env_ec2"
   }
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = ("C:/Users/admin/.ssh/id_rsa")
+      host        = aws_instance.dev[0].public_ip
+    }
+    inline = [
+      "git clone https://github.com/gothinkster/angular-realworld-example-app.git",
+      "cd angular-realworld-example-app",
+      "npm install -g @angular/cli",
+      "npm install"
+    ]
+
+  }
 }
 // creating the ec2 machines without public_ip addresses
 resource "aws_instance" "qa_env" {
@@ -128,4 +144,8 @@ resource "aws_instance" "qa_env" {
   tags = {
     "Name" = var.qa[count.index]
   }
+}
+
+output "url" {
+   value = format("http://%s:4200",aws_instance.dev[0].public_ip)
 }
