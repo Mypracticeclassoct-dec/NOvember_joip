@@ -116,14 +116,14 @@ resource "aws_instance" "dev" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = ("C:/Users/admin/.ssh/id_rsa")
+      private_key = file("~/.ssh/id_rsa")
       host        = aws_instance.dev[0].public_ip
     }
     inline = [
       "git clone https://github.com/gothinkster/angular-realworld-example-app.git",
-      "cd angular-realworld-example-app",
-      "npm install -g @angular/cli",
-      "npm install"
+      "cd angular-realworld-example-app -y",
+      "npm install -g @angular/cli -y",
+      "npm install -y"
     ]
 
   }
