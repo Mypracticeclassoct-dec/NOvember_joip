@@ -98,7 +98,7 @@ resource "aws_security_group" "appsg" {
 }
 // creating ec2 machines  with public_ip enabled 
 resource "aws_instance" "dev" {
-  count                       = 1
+  count                       = "${terraform.workspace == "dev"? 1 : 0 }"
   ami                         = "ami-062df10d14676e201" // EC2 ubuntu machine in mumbai region
   subnet_id                   = aws_subnet.appsub[0].id
   availability_zone           = var.subnet_az[0]
@@ -130,7 +130,7 @@ resource "aws_instance" "dev" {
 }
 // creating the ec2 machines without public_ip addresses
 resource "aws_instance" "qa_env" {
-  count                       = 2
+  count                       = "${terraform.workspace == "qa"? 2 : 0}"
   ami                         = "ami-062df10d14676e201" // EC2 ubuntu machine in mumbai region
   subnet_id                   = aws_subnet.appsub[0].id
   availability_zone           = var.subnet_az[0]
