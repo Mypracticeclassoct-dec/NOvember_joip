@@ -14,4 +14,12 @@
 * To check only the active workspace / environment we are currently working use the command "terraform workspace show "
 * To switch from one workspace to another use the command "terraform workspace select < workspace name >".
 * In the s3 bucket after we create the resources using the different environments their create a folder ENV/ and in that our env folders are created which contains our key of our backend.
+
+* The use of count to use the workspace :
+  count = "${ terraform.workspace == "< workspace name >" ? < value if true >:< value if false >}"
+  example : 
+   * count = "${ terraform.workspace == "dev" ? 1:0}"
+       here if our current workspace is "dev" then the above condition will be true and it will create 1 resource otherwise it will create 0 resource.
+    * count = "${ terraform.workspace == "qa" ? 2:0}"
+        here if our current workspace is "qa" then the above condition will be true and it will create 2 resource otherwise it will create 0 resource.
 -----------------------------------------------------------------
