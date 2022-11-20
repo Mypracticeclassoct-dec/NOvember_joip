@@ -146,6 +146,6 @@ resource "aws_instance" "qa_env" {
   }
 }
 
-output "url" {
+/*output "url" {
    value = format("http://%s:4200",aws_instance.dev[0].public_ip)
-}
+}*/
