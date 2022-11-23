@@ -4,11 +4,11 @@ variable "region" {
 }
 variable "cidr_block"{
   type= string
-  default = "10.10.0.0/16"
+  default = "192.168.0.0/16"
 }
 variable "av_zs" {
    type=list
-
+  description = "This is the availability zones "
 }
 variable "priv_sub" {
   type=list
