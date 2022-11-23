@@ -1,20 +1,31 @@
 variable "region" {
-  type = string
-  default = "us-east-1"
+  type        = string
+  description = "This is the region of the vpc"
 }
-variable "cidr_block"{
-  type= string
-  default = "192.168.0.0/16"
+variable "cidr" {
+  type        = string
+  description = "This is the cidr range of the vpc"
 }
-variable "av_zs" {
-   type=list
-  description = "This is the availability zones "
+variable "subnet_az" {
+  type        = list(string)
+  description = "This is the availability zone of the subnet"
 }
-variable "priv_sub" {
-  type=list
-  description = "this is the private subnet"
+variable "subnet_name" {
+  type        = list(string)
+  description = "This is the name of the subnets"
 }
-variable "pub_sub" {
-  type = list
-  description = "This is the public subnets"
+variable "machine_type" {
+  type        = string
+  description = "This is the type of the ec2 machine created "
+  default     = "t2.micro"
+}
+variable "key_pair" {
+  type        = string
+  default     = "pckey"
+  description = "This is the ssh key "
+}
+variable "qa" {
+  type        = list(string)
+  description = "This is the name of the qa ec2 machines "
+
 }
