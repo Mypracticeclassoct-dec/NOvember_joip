@@ -137,7 +137,7 @@ resource "aws_instance" "dev" {
       host        = aws_instance.dev[0].public_ip
     }
     inline = [
-      "sudo apt update"
+      "sudo apt update",
       "whoami"
     ]
 
@@ -159,6 +159,25 @@ resource "aws_instance" "qa_env" {
   tags = {
     "Name" = var.qa[count.index]
   }
+}
+resource "null_resource" "privateprov" {
+   triggers = {
+      running_numbers = var.trigprivate
+   }
+   connection {
+     type = "ssh"
+     user = "ubuntu"
+     private_key=file("~/.ssh/id_rsa")
+     bastion_host = aws_instance.dev.public_id
+     bastion_private_key = file("~/.ssh/id_rsa")
+     bastion_user = "ubuntu"
+   }
+   provisioner "remote-exec" {
+     inline = [
+      "sudo apt update",
+      "sudo apt install javajdk-11-jdk -y"
+     ]
+   }
 }
 
 /*output "url" {

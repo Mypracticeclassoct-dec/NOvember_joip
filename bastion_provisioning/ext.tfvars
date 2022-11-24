@@ -4,4 +4,5 @@ subnet_az    = ["ap-south-1a","ap-south-1a"]
 subnet_name  = ["publicsb","privatesb"]
 machine_type = "t2.micro"
 key_pair     = "pckey"
-qa           = ["qa1", "qa2"]
+qa           = ["qa1"]
+trigprivate = 1.0

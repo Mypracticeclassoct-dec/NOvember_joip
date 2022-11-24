@@ -29,3 +29,7 @@ variable "qa" {
   description = "This is the name of the qa ec2 machines "
 
 }
+variable "trigprivate" {
+  type = number 
+  default = 1.0
+}
