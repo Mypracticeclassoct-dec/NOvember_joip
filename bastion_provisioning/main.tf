@@ -160,15 +160,21 @@ resource "aws_instance" "qa_env" {
     "Name" = var.qa[count.index]
   }
 }
+// fetching the qa instance data to get the public ip address
+data "aws_instance" "privateip_qa" {
+  instance_id = aws_instance.qa_env[0].id
+}
+// to connect to the machine using private ip address 
 resource "null_resource" "privateprov" {
    triggers = {
       running_numbers = var.trigprivate
    }
    connection {
      type = "ssh"
+     host = data.aws_instance.privateip_qa.private_ip
      user = "ubuntu"
      private_key=file("~/.ssh/id_rsa")
-     bastion_host = aws_instance.dev.public_id
+     bastion_host = aws_instance.dev[0].public_ip
      bastion_private_key = file("~/.ssh/id_rsa")
      bastion_user = "ubuntu"
    }
