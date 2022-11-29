@@ -44,9 +44,7 @@ resource "aws_route_table" "pubrt" {
 // creating private route tables
 resource "aws_route_table" "privrt" {
   vpc_id = aws_vpc.appvpc.id
-  route {
-    cidr_block = aws_subnet.appsub[1].cidr_block
-  }
+  
 }
 // Associating public subnet to the routetable 
 resource "aws_route_table_association" "assort" {
@@ -160,7 +158,7 @@ resource "aws_instance" "qa_env" {
     "Name" = var.qa[count.index]
   }
 }
-// fetching the qa instance data to get the public ip address
+// fetching the qa instance data to get the private ip address
 data "aws_instance" "privateip_qa" {
   instance_id = aws_instance.qa_env[0].id
 }
@@ -169,6 +167,7 @@ resource "null_resource" "privateprov" {
    triggers = {
       running_numbers = var.trigprivate
    }
+   provisioner "remote-exec" {
    connection {
      type = "ssh"
      host = data.aws_instance.privateip_qa.private_ip
@@ -178,10 +177,10 @@ resource "null_resource" "privateprov" {
      bastion_private_key = file("~/.ssh/id_rsa")
      bastion_user = "ubuntu"
    }
-   provisioner "remote-exec" {
+   
      inline = [
       "sudo apt update",
-      "sudo apt install javajdk-11-jdk -y"
+      "echo i am private instance "
      ]
    }
 }

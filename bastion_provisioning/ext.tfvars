@@ -5,4 +5,4 @@ subnet_name  = ["publicsb","privatesb"]
 machine_type = "t2.micro"
 key_pair     = "pckey"
 qa           = ["qa1"]
-trigprivate = 1.0
+trigprivate = 1.1
